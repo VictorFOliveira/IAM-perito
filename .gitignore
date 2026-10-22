@@ -1,0 +1,27 @@
+# .NET / Visual Studio
+**/bin/
+**/obj/
+.vs/
+*.user
+*.suo
+TestResults/
+
+# Rust
+target/
+
+# Dados periciais e pessoais (nunca versionar)
+cases/
+evidence/
+exports/
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+*.img
+*.raw
+*.dd
+
+# Sistema
+.DS_Store
+Thumbs.db
