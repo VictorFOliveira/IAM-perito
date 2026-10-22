@@ -24,7 +24,7 @@ public sealed class AdbService {
  }
  public async Task<IReadOnlyList<PhotoItem>> FindPhotosAsync(string serial,CancellationToken token){
   // find limita a pesquisa ao armazenamento compartilhado; não examina blocos apagados.
-  const string script="find /sdcard/DCIM /sdcard/Pictures -type f \\( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' -o -iname '*.heic' -o -iname '*.heif' \\) 2>/dev/null";
+  const string script=@"find /sdcard/DCIM /sdcard/Pictures -type f \\( -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.png' -o -iname '*.webp' -o -iname '*.heic' -o -iname '*.heif' \\) 2>/dev/null";
   var (code,output)=await RunAsync(new[]{ "-s",serial,"shell","sh","-c",script },token);
   if(code!=0 && string.IsNullOrWhiteSpace(output)) throw new InvalidOperationException("Não foi possível listar as mídias.");
   return output.Split('\\n',StringSplitOptions.RemoveEmptyEntries).Select(p=>p.Trim()).Where(p=>p.StartsWith("/sdcard/",StringComparison.Ordinal) && !p.Contains('\\r') && !p.Contains('\\0')).Distinct(StringComparer.Ordinal).Select(p=>new PhotoItem(Path.GetFileName(p),p,p.Contains("thumb",StringComparison.OrdinalIgnoreCase)?"Possível miniatura":"Arquivo existente")).ToList();
